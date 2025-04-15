@@ -151,6 +151,7 @@ mem[23] = 8'd1;
 
 mem[24] = 8'b0000_0010; // pop to error flag
 mem[25] = 8'd253;
+```
 
 ## 🔢 Part 3: Output Using 7-Segment Display
 
@@ -189,6 +190,7 @@ module sevenSeg_convertor(out, in);
   assign out[5] = number[0]  | number[2]  | number[3]  | number[5]  | number[6]  | number[8];
   assign out[6] = number[0]  | number[1]  | number[7]  | number[12];
 endmodule
+```
 
 Each `number[i]` maps a 4-bit binary input to a decimal digit (0–15), and each `out[j]` controls segment `j` of the seven-segment display. This allows the correct segments to light up and visually represent the corresponding digit.
 
