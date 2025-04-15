@@ -44,18 +44,15 @@ Write a **machine code program** for this processor to:
 > All arithmetic operations are **signed** and use **two’s complement**.  
 > Handle I/O **only through mapped memory** (`0xF8` to `0xFF`).
 
-## 🧠 Part 1: Processor Design
+--
 
-The processor used in this experiment is based on a stack architecture with:
-- An 8-level stack (8-bit width)
-- 256 bytes of memory
-- Memory-mapped I/O for input/output operations
+## 🧠 Part 1: Processor Design
 
 Each instruction is 8 bits. The upper 4 bits represent the `opcode`, which determines the operation. The processor fetches the instruction, stores it in the IR (Instruction Register), and executes it based on its type.
 
 ### 🛠 Instruction Implementation
 
-#### `pushc` — Push Constant
+#### `PUSH C` — Push Constant
 Reads a constant from memory and stores it in the stack.
 ```verilog
 data = mem[pc];
@@ -63,3 +60,12 @@ pc = pc + 1;
 stack[SP] = data;
 SP = SP + 1;
 ``
+#### `PUSH M` — Push from Memory
+Reads a memory address, fetches the value at that address, and pushes it to the stack.
+```verilog
+data = mem[pc];
+pc = pc + 1;
+stack[SP] = mem[data];
+SP = SP + 1;
+``
+
