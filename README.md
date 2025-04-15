@@ -6,8 +6,6 @@ This experiment involves designing and programming a **stack-based processor** w
 - 💾 **256 bytes of memory** (8-bit cells)
 - 🔌 The last 8 memory addresses (`0xF8` to `0xFF`) are reserved for **I/O** using **I/O Mapped Memory**
 
----
-
 ## 📜 Instruction Set
 
 | Opcode | Instruction | Description |
@@ -28,7 +26,7 @@ This experiment involves designing and programming a **stack-based processor** w
 
 ---
 
-## 🧩 Assignment
+## 🧩 Project
 
 Write a **machine code program** for this processor to:
 
@@ -36,3 +34,14 @@ Write a **machine code program** for this processor to:
 2. Calculate the expression:  
    ```text
    Y = ((X + 23) * 2) - 12
+3. Output `Y` to the **7-segment display** on the board.
+4. If:
+  - Input `X` is **negative**, **OR**
+  - Output `Y` **exceeds 127**  
+  ➡️ **Turn ON an error LED** on the board.
+5. Demonstrate **correct execution** on the **FPGA board**.
+6. Ensure **all I/O interactions** (LEDs, switches, 7-segment) are done using **I/O Mapped Memory**.
+
+> 💡 **Note:**  
+> All arithmetic operations are **signed** and use **two’s complement**.  
+> Handle I/O **only through mapped memory** (`0xF8` to `0xFF`).
