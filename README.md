@@ -69,3 +69,38 @@ stack[SP] = mem[data];
 SP = SP + 1;
 ```
 
+#### `POP M` — Pop to Memory
+Pops the top value of the stack and writes it to the memory.
+```verilog
+data = mem[pc];
+pc = pc + 1;
+SP = SP - 1;
+mem[data] = stack[SP];
+```
+
+#### `JUMP` — Unconditional Jump
+Sets the program counter (pc) to the value at the top of the stack.
+```verilog
+SP = SP - 1;
+pc = stack[SP];
+```
+
+#### `JS/JZ` — Conditional Jumps
+Jumps if the `zero` or `sign` flag is set.
+```verilog
+if (z) begin
+  SP = SP - 1;
+  pc = stack[SP];
+end
+```
+
+#### `ADD/SUB` — Arithmetic Operations
+Adds or subtracts the top two stack values, stores the result, and sets flags.
+```verilog
+stack[SP - 2] = stack[SP - 2] + stack[SP - 1];
+SP = SP - 1;
+data = stack[SP - 1];
+
+if (data[7]) s = 1; else s = 0;
+if (~data)  z = 1; else z = 0;
+```
