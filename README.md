@@ -24,8 +24,6 @@ This experiment involves designing and programming a **stack-based processor** w
 - Updated only on `ADD` and `SUB`
 - All operations are **signed** using **two’s complement**
 
----
-
 ## 🧩 Project
 
 Write a **machine code program** for this processor to:
