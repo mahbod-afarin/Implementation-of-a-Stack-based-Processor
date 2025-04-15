@@ -104,3 +104,91 @@ data = stack[SP - 1];
 if (data[7]) s = 1; else s = 0;
 if (~data)  z = 1; else z = 0;
 ```
+
+## 💾 Part 2: Machine Code for Expression `(x + 23) * 2 - 1`
+
+We write machine-level code to compute the expression and store the result in memory. If the result is negative, an error flag is raised.
+
+### 🧮 Assembly Instructions
+
+```verilog
+mem[0]  = 8'b0000_0001; // pushM x
+mem[1]  = 8'd255;
+
+mem[2]  = 8'b0000_0001; // pushM x
+mem[3]  = 8'd255;
+
+mem[4]  = 8'b0000_0000; // pushC 23
+mem[5]  = 8'd23;
+
+mem[6]  = 8'b0000_0000; // pushC 23
+mem[7]  = 8'd23;
+
+mem[8]  = 8'b0000_0110; // add
+mem[9]  = 8'b0000_0110; // add
+mem[10] = 8'b0000_0110; // add
+
+mem[11] = 8'b0000_0000; // pushC 12
+mem[12] = 8'd12;
+
+mem[13] = 8'b0000_0111; // sub
+
+mem[14] = 8'b0000_0001; // pushM error_addr
+mem[15] = 8'd253;
+
+mem[16] = 8'b0000_1010; // jump if sign
+
+mem[17] = 8'b0000_0010; // pop to result
+mem[18] = 8'd254;
+
+mem[19] = 8'b0000_0000; // pushC 32
+mem[20] = 8'd32;
+
+mem[21] = 8'b0000_0011; // jump end
+
+mem[22] = 8'b0000_0000; // pushC 1
+mem[23] = 8'd1;
+
+mem[24] = 8'b0000_0010; // pop to error flag
+mem[25] = 8'd253;
+
+## 🔢 Part 3: Output Using 7-Segment Display
+
+We display the final result using a seven-segment display.
+
+### 🔧 Display Module
+
+```verilog
+module sevenSeg_convertor(out, in);
+  input [3:0] in;
+  output [6:0] out;
+  wire [15:0] number;
+
+  assign number[0]  = ~in[0] & ~in[1] & ~in[2] & ~in[3];
+  assign number[1]  =  in[0] & ~in[1] & ~in[2] & ~in[3];
+  assign number[2]  = ~in[0] &  in[1] & ~in[2] & ~in[3];
+  assign number[3]  =  in[0] &  in[1] & ~in[2] & ~in[3];
+  assign number[4]  = ~in[0] & ~in[1] &  in[2] & ~in[3];
+  assign number[5]  =  in[0] & ~in[1] &  in[2] & ~in[3];
+  assign number[6]  = ~in[0] &  in[1] &  in[2] & ~in[3];
+  assign number[7]  =  in[0] &  in[1] &  in[2] & ~in[3];
+  assign number[8]  = ~in[0] & ~in[1] & ~in[2] &  in[3];
+  assign number[9]  =  in[0] & ~in[1] & ~in[2] &  in[3];
+  assign number[10] = ~in[0] &  in[1] & ~in[2] &  in[3];
+  assign number[11] =  in[0] &  in[1] & ~in[2] &  in[3];
+  assign number[12] = ~in[0] & ~in[1] &  in[2] &  in[3];
+  assign number[13] =  in[0] & ~in[1] &  in[2] &  in[3];
+  assign number[14] = ~in[0] &  in[1] &  in[2] &  in[3];
+  assign number[15] =  in[0] &  in[1] &  in[2] &  in[3];
+
+  assign out[0] = number[1]  | number[4]  | number[11] | number[13];
+  assign out[1] = number[2]  | number[5]  | number[6]  | number[11] | number[12] | number[14];
+  assign out[2] = number[0]  | number[1]  | number[3]  | number[4]  | number[5]  | number[7]  | number[10] | number[13] | number[15];
+  assign out[3] = number[1]  | number[2]  | number[3]  | number[7]  | number[10] | number[15];
+  assign out[4] = number[1]  | number[3]  | number[4]  | number[5]  | number[7]  | number[9];
+  assign out[5] = number[0]  | number[2]  | number[3]  | number[5]  | number[6]  | number[8];
+  assign out[6] = number[0]  | number[1]  | number[7]  | number[12];
+endmodule
+
+Each `number[i]` maps a 4-bit binary input to a decimal digit (0–15), and each `out[j]` controls segment `j` of the seven-segment display. This allows the correct segments to light up and visually represent the corresponding digit.
+
