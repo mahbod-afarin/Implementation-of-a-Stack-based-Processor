@@ -59,7 +59,7 @@ data = mem[pc];
 pc = pc + 1;
 stack[SP] = data;
 SP = SP + 1;
-``
+```
 #### `PUSH M` — Push from Memory
 Reads a memory address, fetches the value at that address, and pushes it to the stack.
 ```verilog
@@ -67,5 +67,5 @@ data = mem[pc];
 pc = pc + 1;
 stack[SP] = mem[data];
 SP = SP + 1;
-``
+```
 
